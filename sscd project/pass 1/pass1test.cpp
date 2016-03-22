@@ -21,6 +21,26 @@ class estab
 	vector<string> ref_sym;//char ref_sym[12][6];
 };
 
+int check_table_def(string str,estab table[10], int count){
+	for(int i = 0; i < table[count].define_index; i++){
+		if( str.compare(table[count].def_sym[i]) == 0){
+			cout<<"**** Define Record :: "<<table[count].def_sym[i]<<" occurs more than once**** "<<endl;
+						exit(0);
+		}
+	}
+	return 1;
+}
+
+int check_table_csect(string str,estab table[10], int count){
+	for(int i = 0; i < count; i++){
+		if( str.compare(table[i].csect) == 0 ){
+			cout<<"**** Control Section name :: "<<table[i].csect<<" occurs more than once**** "<<endl;
+						exit(0);
+		}
+	}
+	return 1;
+}
+
 int main()
 {
 	//char input[10],ch;
@@ -49,11 +69,17 @@ int main()
 	{
 	//fscanf(fp1,"%s",input);
 		char record;
-		cout<<line<<endl;
+		int check ;
+		//cout<<line<<endl;
 		record = line[0];string str;
 		switch(record){
 			case 'H' : //strcpy(table[count].csect,line.substr(1,6));
+						if(line.length() != 20){
+							cout<<"*****Header Definition Invalid*****";
+							exit(0);
+						}
 						str = line.substr(1,6);
+						check_table_csect(str,table,count);
 						table[count].csect.assign(str);
 						str = line.substr(7,6);
 						table[count].start_add = stoi(str) + CSADDR;
@@ -62,6 +88,11 @@ int main()
 						table[count].length = stoi(str);
 						break;
 			case 'D' : n = line.length();
+						if(n > 74){
+							cout<<"*****Defintion Record Definition Invalid*****";
+							exit(0);
+						}
+
 						  ind = table[count].define_index = 0;
 						  //cout<<n;
 						  m = n /12;
@@ -70,6 +101,8 @@ int main()
 						//if(flag == 0)
 						
 						str = line.substr(i,6);
+						check_table_def(str,table,count);
+						
 						
 						table[count].def_sym.push_back(str);
 						str = line.substr(i+6,6);
@@ -92,6 +125,10 @@ int main()
 					//table[count].define_index /= 2;
 					break;
 			case 'R' :  m = line.length();
+						if(m > 74){
+							cout<<"*****Reference Record Definition Invalid*****";
+							exit(0);
+						}
 						  imd = table[count].ref_index = 0;
 						  //string k;
 					for(int i = 1;i < m; i = i + 6){
@@ -107,7 +144,8 @@ int main()
 						//cout<<count;
 						//break;
 			default : 
-					cout<<"default";break;			
+					//cout<<"default";
+						break;			
 		}
 		continue;
 
