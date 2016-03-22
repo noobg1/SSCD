@@ -31,7 +31,7 @@ int main()
 	estab table[10];
 	ifstream infile ("linkin.txt");
 	
-	ofstream outfile ("linkouttest.txt");
+	ofstream outfile ("linkouttest1.txt");
 	
 	/*while( ( ch = fgetc(fp) ) != EOF )
       printf("%c",ch);*/
@@ -39,48 +39,77 @@ int main()
 	//scanf("%x",&start);
 	int start, count = 0;
 	cin>>start;
-	int CSADDR = start,n,m,ind,imd;
+	int CSADDR = start,n,m,ind,imd,flag = 0;
 	//printf("%x",start);
 	//fprintf(fp2,"CSect\tSym_Name\tAddress\t\tLength\n\n");
 	outfile << "CSect\tSym_Name\tAddress\t\tLength\n\n";
 	//rewind(fp1);
-	string line;
+	string line;int lnum = 0;
 	while(getline (infile,line))
 	{
 	//fscanf(fp1,"%s",input);
 		char record;
-		record = line[0];
+		cout<<line<<endl;
+		record = line[0];string str;
 		switch(record){
 			case 'H' : //strcpy(table[count].csect,line.substr(1,6));
-						table[count].csect.assign(line.substr(1,6));
-						table[count].start_add = strtol(line.substr(7,12));
-						table[count].start_add += CSADDR;
-						table[count].length = strtol(line.substr(13,19));
+						str = line.substr(1,6);
+						table[count].csect.assign(str);
+						str = line.substr(7,6);
+						table[count].start_add = stoi(str) + CSADDR;
+						//table[count].start_add += CSADDR;
+						str = line.substr(13,18);
+						table[count].length = stoi(str);
 						break;
 			case 'D' : n = line.length();
 						  ind = table[count].define_index = 0;
-					for(int i = 1;i < n; i = i + 12){
+						  //cout<<n;
+						  m = n /12;
+						for(int i = 1;i < n -1; i = i + 12){
 						//strcpy(table[count].def_sym[table[count].define_index],line.substr(i,i+5));
-						table[count].def_sym.push_back(line.substr(i,i+5));
-						table[count].def_add[ind] =  strtol(line.substr(i+6,i+12));
-						table[count].def_add[ind] += CSADDR;
+						//if(flag == 0)
+						
+						str = line.substr(i,6);
+						
+						table[count].def_sym.push_back(str);
+						str = line.substr(i+6,6);
+						table[count].def_add[table[count].define_index] =  stoi(str) + CSADDR;
+						
+						flag = 1;
+						
+						/*else {
+						str = line.substr(i,i+5);
+						table[count].def_sym.push_back(str);
+						str = line.substr(i+6,i+11);	
+						table[count].def_add[table[count].define_index] =  stoi(str) + CSADDR;
+						flag = 0;
+						}*/
+						//table[count].def_add[ind] += CSADDR;
+						//cout<<i<<endl;
+						//cout<<
 						table[count].define_index++;
 					}
+					//table[count].define_index /= 2;
 					break;
 			case 'R' :  m = line.length();
 						  imd = table[count].ref_index = 0;
+						  //string k;
 					for(int i = 1;i < m; i = i + 6){
 						//strcpy(table[count].ref_sym[table[count].ref_index],line.substr(i,i+5));
-						table[count].ref_sym.push_back(line.substr(i,i+5));
+						str = line.substr(i,i+5);
+						table[count].ref_sym.push_back(str);
 						table[count].ref_index++;
 					}
 					break;
-			case 'E' : count++;
+			case 'E' : 
 						CSADDR += table[count].length;
-						break;
-			default : break;			
+						count++;
+						//cout<<count;
+						//break;
+			default : 
+					cout<<"default";break;			
 		}
-
+		continue;
 
 	}
 		
@@ -88,13 +117,18 @@ int main()
 	
 	for(int i=0;i<count;i++)
 	{  
-		outfile << table[i].csect << "\t\t\t\t" << table[i].start_add << " \t" << table[i].length <<endl<<endl;
-		for(int j = 0; j < table[i].define_index ; i++)
+		outfile << table[i].csect << "\t\t\t\t" << table[i].start_add << " \t\t\t" << table[i].length <<endl<<endl;
+		for(int j = 0; j < table[i].define_index ; j++)
 		{
 		//fprintf(fp2,"%s\t%s\t\t%x\t\t%x\n",table[i].csect,table[i].sym_name,table[i].add,table[i].length);
-		cout << "\t\t\t\t" << table[i].def_sym[j] << "\t" <<table[i].def_add[j]<< endl;
+		outfile << "\t\t" << table[i].def_sym[j] << "\t\t" <<table[i].def_add[j]<< endl;
+		
 		}
 	}
+	outfile.close();
+	infile.close();
+	//delete[] table;
+	//cout<<endl<<table[0].def_sym[0]<<" "<<table[0].def_add[0]<<endl;
 	
 	return 0;
 }
