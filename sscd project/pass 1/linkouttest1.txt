@@ -1,0 +1,14 @@
+CSect	Sym_Name	Address		Length
+
+PROGA 				0 			70
+
+		LISTA 		40
+		ENDA  		54
+PROGB 				70 			88
+
+		LISTB 		130
+		ENDB  		140
+PROGC 				158 			57
+
+		LISTC 		188
+		ENDC  		200
