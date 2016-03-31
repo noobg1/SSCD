@@ -54,13 +54,26 @@ for(int i=0;i<count;i++)
 		{
 		//fprintf(fp2,"%s\t%s\t\t%x\t\t%x\n",table[i].csect,table[i].sym_name,table[i].add,table[i].length);
 		if(s.compare(table[i].def_sym[j]) == 0){
+			//cout<<s<<" : "<<table[i].def_sym[j]<<endl;
 			return table[i].def_add[j];
 		}
-		//cout<<s<<" : "<<table[i].def_sym[j]<<endl;
+		
 		
 		}
 	}
 	return -1;
+}
+
+string mod_record_str_append_space(string s){
+	
+	for(int i = s.length(); i < 6 ;i++){
+		//if(s[i] == '\n')
+		s += ' ';
+		//cout<<"cferfe";
+	}
+	//cout<<"fun:"<<s<<" "<<s.length();
+
+	return s;
 }
 
 int main()
@@ -228,8 +241,10 @@ int main()
 //pass 2
 	infile.clear();
 	infile.seekg(0);
+	fflush(stdin);
+	ifstream infilepass2("infilepass2.txt");
 
-	while(getline(infile,line)){
+	while(getline(infilepass2,line)){
 		//cout<<line;
 		if(line[0] == 'M'){
 			if(line.length() > 17)
@@ -242,14 +257,18 @@ int main()
 						int mod_add = stoul(line.substr(1,6),NULL,16);
 						int mod_len = stoul(line.substr(7,2),NULL,16);
 						string mod_sign = line.substr(9,1);
-						string mod_sym = line.substr(10,6);
-						int mod_val = mod_sym_search(mod_sym,table,count);
-						if(mod_sym.compare(table[1].def_sym[0]) == 0){
+						string mod_sym = line.substr(10,6) ;
+						string mod_sym_appended = mod_record_str_append_space(mod_sym);
+						//cout<<mod_sym_appended;
+						int mod_val = mod_sym_search(mod_sym_appended,table,count);
+						/*if(mod_sym.compare(table[1].def_sym[0]) == 0){
 								cout<<table[1].def_sym[0]<<" " <<mod_sym<<endl;
-							}
-							cout<<table[1].def_sym[0]<<mod_sym<<":"<<endl;
+							}*/
+							//cout<<table[1].def_sym[0]<<mod_sym<<":"<<endl;
+								//cout<<mod_val<<" ";
 						if(mod_val == -1)
 						{
+							//cout<<mod_sym;
 						cout<<"*****symbol not defined*****\n";
 											//exit(0);
 						}
