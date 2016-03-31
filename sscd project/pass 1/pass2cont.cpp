@@ -4,8 +4,12 @@
 #include<fstream>
 #include<vector>
 #include<utility>
-
+//#define fileina "textinpa.txt"
+//#define fileinb "textinpb.txt"
+#define fileina "linkin.txt"
+#define fileinb "linkinb.txt"
 using namespace std;
+
 
 //#include<conio.h>
 
@@ -24,7 +28,8 @@ class estab
 	vector<string> textrecord;
 	int textrecord_index;
 	pair<float,int> textp;
-	vector<pair<float,int>> textv;//char ref_sym[12][6];
+	vector<pair<float,int>> textv;
+	vector< vector<int> > vec;//char ref_sym[12][6];
 };
 
 int check_table_def(string str,estab table[10], int count){
@@ -51,10 +56,10 @@ for(int i=0;i<count;i++)
 	{  
 		
 		for(int j = 0; j < table[i].define_index ; j++)
-		{
+		{cout<<s<<":"<<table[i].def_sym[j]<<endl;
 		//fprintf(fp2,"%s\t%s\t\t%x\t\t%x\n",table[i].csect,table[i].sym_name,table[i].add,table[i].length);
 		if(s.compare(table[i].def_sym[j]) == 0){
-			//cout<<s<<" : "<<table[i].def_sym[j]<<endl;
+			//cout<<s<<table[i].def_sym[j]<<endl;
 			return table[i].def_add[j];
 		}
 		
@@ -62,6 +67,22 @@ for(int i=0;i<count;i++)
 		}
 	}
 	return -1;
+}
+int mod_sym_search_csect(string s,estab table[10],int count){
+for(int i=0;i<count;i++)
+	{  
+		
+		
+		if(s.compare(table[i].csect) == 0){
+			//cout<<s<<" : "<<table[i].def_sym[j]<<endl;
+			return table[i].start_add;
+		}
+		
+		
+		
+	}
+	return -1;
+
 }
 
 string mod_record_str_append_space(string s){
@@ -83,8 +104,10 @@ int main()
 	//FILE *fp1,*fp2,*fp;
 	//fp=fopen("C:/Users/KARTHIK/Desktop/KARTHIK/6th Sem/sscd project/t1.txt","r");
 	//fp1=fopen("t1.txt","r");
+
+	fflush(stdin);
 	estab table[10];
-	ifstream infile ("linkin.txt");
+	ifstream infile (fileina);
 	
 	ofstream outfile ("linkouttest1.txt");
 	ofstream pass2text("pass2text.txt");
@@ -199,6 +222,14 @@ int main()
 							}
 							//else cout<<"\t"
 						}
+
+						/*for (int i = 9; i < text_len *2 + 9; i++) {
+						    vector<int> row; // Create an empty row
+						    
+						        row.push_back((text_start * 2 + i -9)/2); // Add an element (column) to the row
+						    	row.push_back(stoul(line.substr(i,1),NULL,16));
+						    vec.push_back(row); // Add the row to the main vector
+						}*/
 						table[count].textrecord_index++;
 						break;
 					}
@@ -237,13 +268,20 @@ int main()
 			pass2text << (float)aux.first <<" : "<<aux.second <<endl;
 		}
 	}
+	/*ofstream text_record("text_record.txt");
+	for(int i = 0;i <  count ;i++){
+		for(int j = 0 ; j < 2; j++){
+			text_record << table[i].vec[j]
+		}
+	}*/
 
 //pass 2
 	infile.clear();
 	infile.seekg(0);
 	fflush(stdin);
-	ifstream infilepass2("infilepass2.txt");
+	ifstream infilepass2(fileinb);
 
+	cout<<"*****Modifiy Records*****\nSYMBOLS || ADDRESS || OBJECTCODE\n";
 	while(getline(infilepass2,line)){
 		//cout<<line;
 		if(line[0] == 'M'){
@@ -266,12 +304,46 @@ int main()
 							}*/
 							//cout<<table[1].def_sym[0]<<mod_sym<<":"<<endl;
 								//cout<<mod_val<<" ";
+						//cout<<mod_sym_appended<<":"<<mod_val<<endl;
+								
+						int mod_val_csect;		
 						if(mod_val == -1)
 						{
 							//cout<<mod_sym;
-						cout<<"*****symbol not defined*****\n";
-											//exit(0);
+							 mod_val = mod_sym_search_csect(mod_sym_appended,table,count);
+							if(mod_val == -1)
+								{
+								cout<<"*****symbol not defined*****\n";
+								cout<<mod_sym_appended<<endl;
+											exit(0);
+								}
+								cout<<mod_sym_appended<<" :: "<<mod_val<<" :: "<<mod_add<<endl;
+
+						}else{
+							cout<<mod_sym_appended<<" :: "<<mod_val<<" :: "<<mod_add<<endl;
 						}
+				pair<int,int> aux;
+				/*for(int i = 0; i <count ;i++){
+					for(vector<pair<float,int> >::iterator it2 = table[i].textv.begin(); it2 != table[i].textv.end(); ++it2){
+						aux = *it2;
+						if(mod_val_csect == aux.first){
+							cout<"found";
+						for(int j = mod_len; j > 6-mod_len ;j--){
+							aux.second = 0;
+						}
+						}
+						//pass2text << (float)aux.first <<" : "<<aux.second <<endl;
+					}
+				}*/
+					/*vector<pair<float,int>>::iterator it
+				ofstream pass2out_after("pass2out_after.txt");
+				pair<int,int> aux1;
+					for(int i = 0; i <count ;i++){
+						for(vector<pair<float,int> >::iterator it2 = table[i].textv.begin(); it2 != table[i].textv.end(); ++it2){
+							aux1 = *it2;
+							pass2out_after << (float)aux1.first <<" : "<<aux1.second <<endl;
+						}
+					}*/
 						//cout<<mod_sym<<"\t"<<mod_val<<endl;
 		}
 	}
