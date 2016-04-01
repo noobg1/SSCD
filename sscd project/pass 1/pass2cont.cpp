@@ -4,6 +4,10 @@
 #include<fstream>
 #include<vector>
 #include<utility>
+#define fileina "textinpa.txt"
+#define fileinb "textinpb.txt"
+//#define fileina "linkin.txt"
+//#define fileinb "linkinb.txt"
 
 using namespace std;
 
@@ -84,7 +88,7 @@ int main()
 	//fp=fopen("C:/Users/KARTHIK/Desktop/KARTHIK/6th Sem/sscd project/t1.txt","r");
 	//fp1=fopen("t1.txt","r");
 	estab table[10];
-	ifstream infile ("linkin.txt");
+	ifstream infile (fileina);
 	
 	ofstream outfile ("linkouttest1.txt");
 	ofstream pass2text("pass2text.txt");
@@ -112,8 +116,8 @@ int main()
 		switch(record){
 			case 'H' : //strcpy(table[count].csect,line.substr(1,6));
 						//cout<<line.length();
-						if(line.length() != 20){
-							cout<<"*****Header Definition Invalid*****";
+						if(line.length() > 20){
+							cout<<line.length()<<"*****Header Definition Invalid*****";
 							exit(0);
 						}
 						str = line.substr(1,6);
@@ -242,7 +246,8 @@ int main()
 	infile.clear();
 	infile.seekg(0);
 	fflush(stdin);
-	ifstream infilepass2("infilepass2.txt");
+	ifstream infilepass2(fileinb);
+	cout<<"*****Modifiy Records*****\nSYMBOLS || ADDRESS || OBJECTCODE\n";
 
 	while(getline(infilepass2,line)){
 		//cout<<line;
@@ -272,6 +277,7 @@ int main()
 						cout<<"*****symbol not defined*****\n";
 											//exit(0);
 						}
+						cout<<mod_sym_appended<<" :: "<<mod_val<<" :: "<<mod_add<<endl;
 						//cout<<mod_sym<<"\t"<<mod_val<<endl;
 		}
 	}
