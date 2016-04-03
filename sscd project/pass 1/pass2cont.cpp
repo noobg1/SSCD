@@ -4,10 +4,12 @@
 #include<fstream>
 #include<vector>
 #include<utility>
+//#define fileina "int1a.txt"
+//#define fileinb "int1b.txt"
 #define fileina "textinpa.txt"
 #define fileinb "textinpb.txt"
 //#define fileina "linkin.txt"
-//#define fileinb "linkinb.txt"
+//#define fileinb "linkina.txt"
 
 using namespace std;
 
@@ -64,6 +66,20 @@ for(int i=0;i<count;i++)
 		
 		
 		}
+	}
+	for(int i=0;i<count;i++)
+	{  
+		
+		
+		//fprintf(fp2,"%s\t%s\t\t%x\t\t%x\n",table[i].csect,table[i].sym_name,table[i].add,table[i].length);
+		if(s.compare(table[i].csect) == 0)
+		{
+			//cout<<s<<" : "<<table[i].def_sym[j]<<endl;
+			return table[i].start_add;
+		}
+		
+		
+		
 	}
 	return -1;
 }
@@ -124,10 +140,10 @@ int main()
 						check_table_csect(str,table,count);
 						table[count].csect.assign(str);
 						str = line.substr(7,6);
-						table[count].start_add = stoi(str) + CSADDR;
+						table[count].start_add = stoul(str,NULL,16) + CSADDR;
 						//table[count].start_add += CSADDR;
 						str = line.substr(13,18);
-						table[count].length = stoi(str);
+						table[count].length = stoul(str,NULL,16);
 						break;
 			case 'D' : n = line.length();
 						if(n > 74){
@@ -148,7 +164,7 @@ int main()
 						
 						table[count].def_sym.push_back(str);
 						str = line.substr(i+6,6);
-						table[count].def_add[table[count].define_index] =  stoi(str) + CSADDR;
+						table[count].def_add[table[count].define_index] =  stoul(str,NULL,16) + CSADDR;
 						
 						flag = 1;
 						
@@ -247,7 +263,7 @@ int main()
 	infile.seekg(0);
 	fflush(stdin);
 	ifstream infilepass2(fileinb);
-	cout<<"*****Modifiy Records*****\nSYMBOLS || ADDRESS || OBJECTCODE\n";
+	cout<<"*****Modifiy Records*****\nSYMBOLS || ACTUAl_ADDRESS || START_ADDTOBMOD\n";
 
 	while(getline(infilepass2,line)){
 		//cout<<line;
