@@ -1,4 +1,0 @@
-CSect	Sym_Name	Address		Length
-
-COPY  				0 			4215
-

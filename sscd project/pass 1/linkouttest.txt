@@ -1,5 +1,0 @@
-CSect	Sym_Name	Address		Length
-
-PROGA 				1070 	70
-
-				LISTA 	3168608

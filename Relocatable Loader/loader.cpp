@@ -4,12 +4,15 @@
 #include<fstream>
 #include<vector>
 #include<utility>
-//#define fileina "int1a.txt"
-//#define fileinb "int1b.txt"
-#define fileina "textinpa.txt"
-#define fileinb "textinpb.txt"
-//#define fileina "linkin.txt"
-//#define fileinb "linkina.txt"
+#include<iomanip>
+#define fileina "inputset1a.txt"
+#define fileinb "inputset1b.txt"
+//#define fileina "inputset2a.txt"
+//#define fileinb "inputset2b.txt"
+//#define fileina "inputset4a.txt"
+//#define fileinb "inputset4b.txt"
+//#define fileinb "inputset3b.txt"
+//#define fileina "inputset3a.txt"
 
 using namespace std;
 
@@ -106,8 +109,8 @@ int main()
 	estab table[10];
 	ifstream infile (fileina);
 	
-	ofstream outfile ("linkouttest1.txt");
-	ofstream pass2text("pass2text.txt");
+	ofstream outfile ("estab.txt");
+	ofstream pass2text("memorymap.txt");
 	
 	/*while( ( ch = fgetc(fp) ) != EOF )
       printf("%c",ch);*/
@@ -251,11 +254,17 @@ int main()
 	}
 	
 	pair<int,int> aux;
+	
 	for(int i = 0; i <count ;i++){
+		int linebreak = 0;																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	
 		for(vector<pair<float,int> >::iterator it2 = table[i].textv.begin(); it2 != table[i].textv.end(); ++it2){
-			aux = *it2;
-			pass2text << (float)aux.first <<" : "<<aux.second <<endl;
+			aux = *it2;linebreak++;
+			pass2text <<"|"<<setw(5)<<(float)aux.first <<" : "<<setw(5)<<aux.second <<"|"<<"  ";
+			//pass2text << (float)aux.first <<" : "<<aux.second <<endl;
+			if(linebreak % 5 == 0)
+				pass2text<<"\n";
 		}
+		pass2text <<endl<<endl<<endl;
 	}
 
 //pass 2
@@ -293,7 +302,7 @@ int main()
 						cout<<"*****symbol not defined*****\n";
 											//exit(0);
 						}
-						cout<<mod_sym_appended<<" :: "<<mod_val<<" :: "<<mod_add<<endl;
+						cout<<setw(5)<<mod_sym_appended<<" :: "<<setw(5)<<mod_val<<" :: "<<setw(5)<<mod_add<<endl;
 						//cout<<mod_sym<<"\t"<<mod_val<<endl;
 		}
 	}
