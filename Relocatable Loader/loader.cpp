@@ -5,12 +5,12 @@
 #include<vector>
 #include<utility>
 #include<iomanip>
-#define fileina "inputset1a.txt"
-#define fileinb "inputset1b.txt"
+//#define fileina "inputset1a.txt"
+//#define fileinb "inputset1b.txt"
 //#define fileina "inputset2a.txt"
 //#define fileinb "inputset2b.txt"
-//#define fileina "inputset4a.txt"
-//#define fileinb "inputset4b.txt"
+#define fileina "inputset4a.txt"
+#define fileinb "inputset4b.txt"
 //#define fileinb "inputset3b.txt"
 //#define fileina "inputset3a.txt"
 
